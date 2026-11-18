@@ -31,3 +31,76 @@ of this repo snapshot). `dev/minify.py` minifies it to `tiny.py` and
 Local practice trial (6 games, trial-0): 4 wins, 0 draws, 2 losses —
 practice Elo 1,451, above the 1,154 floor. See the submission for the
 graded result.
+
+## How it works
+
+- 0x88 board
+- 128 squares
+- off-board 99
+- 21-bit moves
+- from 7 bits
+- to 7 bits
+- promo 3 bits
+- flag 4 bits
+- FEN parsing
+- castling rights
+- en passant
+- promotions
+- pawn pushes
+- double pushes
+- knight jumps
+- bishop slides
+- rook slides
+- queen slides
+- king steps
+- alpha-beta
+- TT dict
+- 2 killers/ply
+- MVV-LVA order
+- null-move R=2
+- LMR
+- quiescence
+- futility 150
+- 80k node budget
+- node counter
+- stop flag
+- mate 100000
+- INF 1e9
+- Zobrist keys
+- seeded RNG
+- seed 20261118
+- side key
+- castle keys
+- ep keys
+- PST tables
+- 7 PST tables
+- king mg + eg
+- phase blend
+- phase cap 6200
+- pawn 100
+- knight 320
+- bishop 330
+- rook 500
+- queen 900
+- doubled -10
+- isolated -8
+- passed pawns
+- bishop pair 30
+- rook bonuses
+- repetition draw
+- rep count 2
+- make/unmake
+- undo tuples
+- root search
+- UCI strings
+- /game + /move
+- FEN per move
+- history replay
+- deterministic
+- perft d4 197281
+- kiwipete 97862
+- no time limit
+- single file
+- LZMA payload
+- pure stdlib
+- 4,004 bytes
