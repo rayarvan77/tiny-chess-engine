@@ -1,111 +1,147 @@
-# tiny-chess-engine
+# Tiny Chess Engine
 
 [![make.fun · tiny-chess-01](https://make.fun/badge/tiny-chess-01.svg)](https://make.fun/bounty/tiny-chess-01?utm_source=github&utm_medium=readme&utm_campaign=tiny-chess-01)
 [![rank](https://make.fun/badge/tiny-chess-01/rayarvan77/tiny-chess-engine/rank.svg)](https://make.fun/bounty/tiny-chess-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=tiny-chess-01)
 [![reward](https://make.fun/badge/tiny-chess-01/rayarvan77/tiny-chess-engine/reward.svg)](https://make.fun/bounty/tiny-chess-01?utm_source=github&utm_medium=readme&utm_campaign=tiny-chess-01)
 
-A chess engine in 4,074 bytes of Python, written for the [make.fun](https://make.fun)
-`tiny-chess-01` bounty: play a fixed gauntlet of eight house engines
-through the env at `MAKEFUN_ENV_URL`, one move per position, UCI.
+## Overview
 
-`main.py` is the whole engine: an LZMA-compressed payload that unpacks
-to a 0x88-board alpha-beta searcher with transposition table, killer
-moves, MVV-LVA ordering, null-move pruning, LMR, quiescence search with
-futility pruning, and a piece-square + pawn-structure evaluation.
-Fixed 60,000-node budget per move, so play is fully deterministic.
+- Tiny UCI engine.
+- For tiny-chess-01.
+- Entry: Proper Sextant.
+- Prize pool: $500.
+- rayarvan77/tiny-chess-engine.
+- Python 3.13.
+- One move per pos.
+- Eight house engines.
 
-Run it with the env URL set:
+## Run
 
-```
-MAKEFUN_ENV_URL=http://127.0.0.1:8080 python3 -P -s main.py
-```
+- Local env server first.
+- Set MAKEFUN_ENV_URL.
+- MAKEFUN_ENV_URL=http://127.0.0.1:8080
+- python3 -P -s main.py
+- Packed entry point.
+- Packed: 4,036 bytes.
+- Cap: 4,096 bytes.
+- Payload: LZMA.
+- Unpacked: 13,011 bytes.
 
-It plays every game the env serves, then exits when the trial is done.
+## Board
 
-## Build
+- 0x88 board.
+- 128 squares.
+- Off-board test.
+- Legal moves only.
 
-The readable source lives in `dev/final.py` (development only, not part
-of this repo snapshot). `dev/minify.py` minifies it to `tiny.py` and
-`dev/pack.py` LZMA-packs it into `main.py` (4,074 bytes).
+## Search
 
-Local practice trials (6 games each): trial-0 and trial-1 both 3 wins,
-0 draws, 3 losses — practice Elo 1,279, above the 1,154 floor. No move
-timed out (slowest 7.2 s of the 10 s limit). See the submission for the
-graded result.
+- Alpha-beta search.
+- Fixed node budget.
+- Budget: 60,000 nodes.
+- Deterministic.
+- Iterative deepening.
+- MVV-LVA ordering.
+- Killer moves.
+- History heuristic.
+- Transposition table.
+- Quiescence search.
+- Futility pruning.
+- Null-move pruning.
+- Late move reductions.
+- Mate-distance pruning.
+- Ply-adjusted mates.
 
-## How it works
+## Evaluation
 
-- 0x88 board
-- 128 squares
-- off-board 99
-- 21-bit moves
-- from 7 bits
-- to 7 bits
-- promo 3 bits
-- flag 4 bits
-- FEN parsing
-- castling rights
-- en passant
-- promotions
-- pawn pushes
-- double pushes
-- knight jumps
-- bishop slides
-- rook slides
-- queen slides
-- king steps
-- alpha-beta
-- TT dict
-- 2 killers/ply
-- MVV-LVA order
-- null-move R=3
-- LMR
-- quiescence
-- futility 150
-- 60k node budget
-- node counter
-- stop flag
-- mate 100000
-- INF 1e9
-- Zobrist keys
-- seeded RNG
-- seed 20261118
-- side key
-- castle keys
-- ep keys
-- PST tables
-- 7 PST tables
-- king mg + eg
-- phase blend
-- phase cap 6200
-- pawn 100
-- knight 320
-- bishop 330
-- rook 500
-- queen 900
-- doubled -10
-- isolated -8
-- passed pawns
-- bishop pair 30
-- rook bonuses
-- repetition draw
-- rep count 2
-- make/unmake
-- undo tuples
-- root search
-- UCI strings
-- /game + /move
-- FEN per move
-- history replay
-- eval cache
-- mate distance
-- TT mate scores
-- non-pawn counts
-- deterministic
-- perft d4 197281
-- kiwipete 97862
-- no time limit
-- single file
-- LZMA payload
-- pure stdlib
-- 4,074 bytes
+- Piece-square tables.
+- Tables are int lists.
+- Pawn structure scored.
+- Passed pawns via masks.
+- Masks span files.
+- Hash-keyed eval cache.
+- Cache clears per move.
+- Hit rate: 26-38%.
+- Cache values identical.
+- Non-pawn count.
+- Guards null-move.
+
+## Speed
+
+- About 26,800 NPS.
+- v1: about 16,570 NPS.
+- Gain: about 1.6x.
+- Mean: 1.9-2.5 s.
+- Max: 7.2 s.
+- Move limit: 10 s.
+- v1: 8.5-13.1 s.
+- v1 timed out each game.
+
+## Trials
+
+- Kit server trials.
+- Trial 0: 3W, 3L.
+- Trial 1: 3W, 3L.
+- Elo: ~1,279.
+- Elo floor: 1,154.
+- Spare: 374/362.
+- Beat depth-2.
+- Beat depth-3.
+- Beat nodes-100k.
+- Beat nodes-250k.
+- Lost depth-4 once.
+- Lost nodes-100k once.
+- Lost nodes-500k twice.
+- Over 9 s: 0.
+- Checked: 516 moves.
+- v1 slow: 8/8.
+- Wall: 502 s.
+- Wall 2: 706 s.
+- Limit: 1,800 s.
+
+## Correctness
+
+- Startpos d3: 8,902.
+- Kiwipete d3: 97,862.
+- Pos 3 d4: 43,238.
+- Eval matches v1.
+- Minified same.
+- 3 positions checked.
+- Same as source.
+
+## v2 Changes
+
+- Budget: 80k to 60k.
+- Eval cache added.
+- Pawn masks added.
+- PSTs now int lists.
+- Non-pawn counter.
+- Mate-distance pruning.
+- TT mates adjusted.
+- PVS tried, dropped.
+- PVS +15-26% nodes.
+- Hit quiet spots.
+- 1-letter names.
+- LZMA1 packing.
+
+## Leaderboard
+
+- Top Elo: 2,110.
+- Top record: 8-0.
+- Top spare: 1,061.
+- v2: no top-3 pick.
+- Big step up.
+- Up from round 2.
+- Round 2 timed out.
+- v2 stays in time.
+
+## Files
+
+- main.py: packed entry.
+- README.md: this file.
+- LICENSE: MIT license.
+
+## License
+
+- MIT license.
+- See LICENSE for terms.
